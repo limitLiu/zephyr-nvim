@@ -231,7 +231,13 @@ local plugin_syntax = {
 
   dbui_tables = { fg = z.blue },
 
-  CursorWord = { bg = z.base4, underline = true },
+  CursorWord = { bg = z.base4, underline = false },
+
+  -- RRethy/vim-illuminate
+  illuminatedWord = { link = "CursorWord" },
+  IlluminatedWordText = { link = "CursorWord" },
+  IlluminatedWordRead = { link = "CursorWord" },
+  IlluminatedWordWrite = { link = "CursorWord" },
 
   NvimTreeFolderName = { fg = z.blue },
   NvimTreeRootFolder = { fg = z.red, bold = true },
@@ -302,17 +308,21 @@ end
 async_load_plugin = vim.loop.new_async(vim.schedule_wrap(function()
   z.terminal_color()
   set_hl(plugin_syntax)
-  async_load_plugin:close()
+  if async_load_plugin ~= nil then
+    async_load_plugin:close()
+  end
 end))
 
 function z.colorscheme()
-  vim.api.nvim_command("hi clear")
+  vim.api.nvim_command "hi clear"
 
   vim.o.background = "dark"
   vim.o.termguicolors = true
   vim.g.colors_name = "zephyr"
   set_hl(syntax)
-  async_load_plugin:send()
+  if async_load_plugin ~= nil then
+    async_load_plugin:send()
+  end
 end
 
 z.colorscheme()
